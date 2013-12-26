@@ -11,6 +11,8 @@ type Event struct {
 
 // event_name "*_item"
 type ItemEvent struct {
+	Id             int
+	ProjectId      int `json:"project_id"`
 	Environment    string
 	Title          string
 	LastOccurrence LastOccurrence `json:"last_occurrence"`

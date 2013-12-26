@@ -49,6 +49,8 @@ func TestUnmarshalItemEvent(t *testing.T) {
 	}
 
 	expected := ItemEvent{
+		Id:          272716944,
+		ProjectId:   90,
 		Environment: "production",
 		Title:       "testing aobg98wrwe",
 		LastOccurrence: LastOccurrence{

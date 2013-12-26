@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"github.com/AlekSi/pushover"
 	"github.com/AlekSi/roll2push/rollbar"
 	"io/ioutil"
@@ -62,7 +63,8 @@ func hook(rw http.ResponseWriter, req *http.Request) {
 			}
 
 			l.Printf("%+v", item)
-			l.Printf("pushover: %v", pushover.SendMessage(User, item.Environment, item.Title))
+			msg := fmt.Sprintf("%s Project: %d Id: %d", item.Title, item.ProjectId, item.Id)
+			l.Printf("pushover: %v", pushover.SendMessage(User, item.Environment, msg))
 
 		} else {
 			l.Printf("unexpected event: %s", event.EventName)
