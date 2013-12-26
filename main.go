@@ -2,12 +2,18 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
+	"github.com/AlekSi/pushover"
 	"github.com/AlekSi/roll2push/rollbar"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+)
+
+var (
+	User string
 )
 
 func hook(rw http.ResponseWriter, req *http.Request) {
@@ -42,6 +48,7 @@ func hook(rw http.ResponseWriter, req *http.Request) {
 		}
 
 		l.Print(test)
+		pushover.SendMessage(User, "test", test)
 
 	case "deploy":
 		l.Printf("event is not handled yet: %s", event.EventName)
@@ -55,6 +62,7 @@ func hook(rw http.ResponseWriter, req *http.Request) {
 			}
 
 			l.Printf("%+v", item)
+			pushover.SendMessage(User, item.Environment, item.Title)
 
 		} else {
 			l.Printf("unexpected event: %s", event.EventName)
@@ -66,6 +74,13 @@ func hook(rw http.ResponseWriter, req *http.Request) {
 
 func main() {
 	log.SetFlags(log.Ldate | log.Lmicroseconds)
+
+	token := flag.String("pushover-token", "", "")
+	flag.StringVar(&User, "pushover-user", "", "")
+	flag.Parse()
+
+	pushover.DefaultClient.Token = *token
+
 	http.HandleFunc("/", hook)
 
 	addr := ":8080"
