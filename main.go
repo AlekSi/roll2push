@@ -48,7 +48,7 @@ func hook(rw http.ResponseWriter, req *http.Request) {
 		}
 
 		l.Print(test)
-		pushover.SendMessage(User, "test", test)
+		l.Printf("pushover: %v", pushover.SendMessage(User, "test", test))
 
 	case "deploy":
 		l.Printf("event is not handled yet: %s", event.EventName)
@@ -62,7 +62,7 @@ func hook(rw http.ResponseWriter, req *http.Request) {
 			}
 
 			l.Printf("%+v", item)
-			pushover.SendMessage(User, item.Environment, item.Title)
+			l.Printf("pushover: %v", pushover.SendMessage(User, item.Environment, item.Title))
 
 		} else {
 			l.Printf("unexpected event: %s", event.EventName)
